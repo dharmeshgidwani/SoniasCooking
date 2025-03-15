@@ -17,7 +17,7 @@ const authMiddleware = async (req, res, next) => {
     console.log("User from DB:", user); // 🔥 Debug
 
     if (!user) {
-      return res.status(404).json({ message: "User not found" }); // 🚨 This is likely causing your issue!
+      return res.status(404).json({ message: "User not found" }); 
     }
 
     req.user = user;

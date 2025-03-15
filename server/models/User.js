@@ -8,6 +8,7 @@ const userSchema = new mongoose.Schema({
   otpExpires: Date,
   verified: { type: Boolean, default: false },
   role: { type: String, default: "user" }, // Admin or User
+  favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: "Recipe" }], 
 });
 
 module.exports = mongoose.model("User", userSchema);

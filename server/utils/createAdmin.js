@@ -2,11 +2,11 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 require("dotenv").config();
 
-const User = require("../models/User"); // Adjust path if needed
+const User = require("../models/User"); 
 
 const createAdmin = async () => {
   try {
-    await mongoose.connect(process.env.MONGO_URI, {
+    await mongoose.connect("mongodb://localhost:27017/soniascooking", {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });

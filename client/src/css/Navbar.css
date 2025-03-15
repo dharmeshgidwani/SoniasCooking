@@ -1,31 +1,41 @@
-/* Navbar Styles */
+/* General Navbar Styles */
 .navbar {
-  background-color: #007bff;
+  background-color: #a30000; /* Beautiful Red Shade */
   color: white;
   padding: 15px 20px;
   display: flex;
   justify-content: center;
+  align-items: center;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  position: sticky;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
 }
 
+/* Navbar Container */
 .nav-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
   max-width: 1200px;
+  padding: 0 20px;
 }
 
+/* Logo */
 .nav-logo {
-  font-size: 1.5rem;
+  font-size: 1.7rem;
   font-weight: bold;
   text-decoration: none;
   color: white;
 }
 
+/* Navbar Links */
 .nav-links {
   list-style: none;
   display: flex;
+  align-items: center; 
   gap: 20px;
 }
 
@@ -33,39 +43,124 @@
   display: inline;
 }
 
-.nav-links a {
+.nav-links a, .nav-logout {
   text-decoration: none;
   color: white;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   transition: 0.3s;
+  font-weight: 500;
 }
 
 .nav-links a:hover {
-  color: #f8f9fa;
-  text-decoration: underline;
+  color: #ffcccc;
 }
 
 /* Login Button */
 .nav-login {
-  background-color: #28a745;
-  padding: 8px 12px;
+  background-color: #ff4d4d;
+  padding: 8px 15px;
   border-radius: 5px;
+  font-weight: bold;
+  transition: 0.3s;
 }
 
 .nav-login:hover {
-  background-color: #218838;
+  background-color: #cc0000;
 }
 
-/* Language Toggle Button */
-.language-toggle {
-  background-color: #ffc107;
-  color: black;
-  padding: 8px 12px;
-  border: none;
-  border-radius: 5px;
+/* ✅ Hamburger Menu */
+.hamburger {
+  display: none;
+  flex-direction: column;
   cursor: pointer;
+  position: absolute;
+  right: 20px;
+  top: 15px;
+  z-index: 1100;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
 }
 
-.language-toggle:hover {
-  background-color: #e0a800;
+.bar {
+  width: 30px;
+  height: 4px;
+  background-color: white;
+  margin: 5px 0;
+  transition: 0.3s;
+  border-radius: 3px;
 }
+
+/* Rotate Hamburger Bars When Open */
+.bar.open:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+.bar.open:nth-child(2) {
+  opacity: 0;
+}
+.bar.open:nth-child(3) {
+  transform: rotate(-45deg) translate(5px, -5px);
+}
+
+/* ✅ Responsive Fixes */
+@media (max-width: 768px) {
+  /* Show Hamburger */
+  .hamburger {
+    display: flex;
+  }
+
+  /* Hide Nav Links Initially */
+  .nav-links {
+    position: absolute;
+    top: 60px;
+    right: 0;
+    background-color: #a30000;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    display: none;
+    padding: 15px 0;
+  }
+
+  .nav-links.active {
+    display: flex;
+  }
+
+  .nav-links li {
+    margin: 10px 0;
+  }
+
+  .nav-login {
+    padding: 10px 20px;
+  }
+  .nav-logout {
+    padding: 12px 22px;
+    font-size: 1.1rem;
+    width: 100%;
+    text-align: center;
+  }
+}
+.nav-logout {
+  background: linear-gradient(135deg, #ff4d4d, #cc0000); /* Gradient Red */
+  padding: 10px 18px;
+  border: none;
+  border-radius: 25px; /* Rounded Button */
+  font-size: 1rem;
+  font-weight: bold;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Hover Effect */
+.nav-logout:hover {
+  background: linear-gradient(135deg, #e60000, #990000); /* Darker Red */
+  transform: scale(1.05); /* Slight Pop Effect */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
