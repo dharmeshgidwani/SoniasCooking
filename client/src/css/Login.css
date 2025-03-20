@@ -1,0 +1,137 @@
+/* 🌟 Full-Page Background */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(135deg, #ffcccc, #ffe6e6, #ff9999);
+    animation: bgAnimation 8s infinite alternate ease-in-out;
+    font-family: "Poppins", sans-serif;
+  }
+  
+  /* 🎨 Background Animation */
+  @keyframes bgAnimation {
+    0% {
+      background: linear-gradient(135deg, #ffcccc, #ffe6e6, #ff9999);
+    }
+    50% {
+      background: linear-gradient(135deg, #ffe6e6, #ffb3b3, #ff6666);
+    }
+    100% {
+      background: linear-gradient(135deg, #ff9999, #ffcccc, #ffe6e6);
+    }
+  }
+  
+  /* 🚀 Centered Login Box */
+  .login-box {
+    background: white;
+    padding: 40px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+    text-align: center;
+    animation: fadeIn 0.6s ease-in-out;
+  }
+  
+  /* 🌟 Login Title */
+  .login-box h2 {
+    color: #a30000;
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
+  
+  /* 📌 Input Fields */
+  .login-box input {
+    width: 90%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    outline: none;
+    transition: all 0.3s ease-in-out;
+    text-align: center;
+  }
+  
+  .login-box input:focus {
+    border-color: #a30000;
+    box-shadow: 0 0 10px rgba(163, 0, 0, 0.3);
+  }
+  
+  /* 🔑 Stylish Login Button */
+  .login-box button {
+    width: 100%;
+    background: linear-gradient(135deg, #ff4d4d, #d40000);
+    color: white;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  .login-box button:hover {
+    background: linear-gradient(135deg, #cc0000, #990000);
+    transform: scale(1.05);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3);
+  }
+  
+  /* 🌟 Floating Animation for Login Box */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* 📱 Responsive Design */
+  @media (max-width: 480px) {
+    .login-box {
+      width: 90%;
+      padding: 30px;
+    }
+  
+    .login-box h2 {
+      font-size: 1.6rem;
+    }
+  
+    .login-box input {
+      font-size: 1rem;
+      padding: 10px;
+    }
+  
+    .login-box button {
+      font-size: 1rem;
+      padding: 10px;
+    }
+  }
+  /* 🌟 Signup Link Styling */
+.signup-link {
+  margin-top: 15px;
+  font-size: 1rem;
+  color: #333;
+}
+
+.signup-link a {
+  color: #d40000; /* Red color to match theme */
+  font-weight: bold;
+  text-decoration: none;
+  transition: all 0.3s ease-in-out;
+}
+
+.signup-link a:hover {
+  text-decoration: underline;
+  color: #990000; /* Darker shade on hover */
+}
+
+  

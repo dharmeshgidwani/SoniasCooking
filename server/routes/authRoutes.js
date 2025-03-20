@@ -10,26 +10,27 @@ const router = express.Router();
 const generateOTP = () => Math.floor(100000 + Math.random() * 900000).toString();
 
 // Signup Route
+const usersAwaitingVerification = new Map(); 
 router.post("/signup", async (req, res) => {
   const { name, email, phone, password } = req.body;
 
   try {
-    let user = await User.findOne({ email });
-    if (user) return res.status(400).json({ message: "User already exists" });
+    let existingUser = await User.findOne({ email });
+    if (existingUser) return res.status(400).json({ message: "User already exists" });
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const otp = generateOTP();
-
-    user = new User({
+    
+    // Store user details temporarily (Not in DB yet)
+    usersAwaitingVerification.set(email, {
       name,
       email,
       phone,
       password: hashedPassword,
       otp,
-      otpExpires: Date.now() + 5 * 60 * 1000, // OTP expires in 5 mins
+      otpExpires: Date.now() + 5 * 60 * 1000, // 5 minutes expiry
     });
 
-    await user.save();
     await sendOTP(email, otp);
 
     res.status(200).json({ message: "OTP sent to email. Please verify." });
@@ -39,26 +40,38 @@ router.post("/signup", async (req, res) => {
 });
 
 
+
 // Verify OTP Route
 router.post("/verify-otp", async (req, res) => {
   const { email, otp } = req.body;
 
   try {
-    const user = await User.findOne({ email });
-    if (!user || user.otp !== otp || user.otpExpires < Date.now()) {
+    // Retrieve user details from temporary storage
+    const userData = usersAwaitingVerification.get(email);
+
+    if (!userData || userData.otp !== otp || userData.otpExpires < Date.now()) {
       return res.status(400).json({ message: "Invalid or expired OTP" });
     }
 
-    user.verified = true;
-    user.otp = null;
-    user.otpExpires = null;
-    await user.save();
+    // Save user in database only after OTP verification
+    const newUser = new User({
+      name: userData.name,
+      email: userData.email,
+      phone: userData.phone,
+      password: userData.password,
+      verified: true,
+    });
 
-    res.status(200).json({ message: "Email verified successfully" });
+    await newUser.save();
+    
+    usersAwaitingVerification.delete(email);
+
+    res.status(200).json({ message: "Email verified successfully. Account created!" });
   } catch (error) {
     res.status(500).json({ message: "Server Error" });
   }
 });
+
 
 // Login Route
 router.post("/login", async (req, res) => {

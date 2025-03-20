@@ -54,16 +54,17 @@ router.get(
 // ✅ Add a new recipe
 router.post("/", upload.array("images", 5), async (req, res) => {
   try {
-    const { 
-      title, 
-      description, 
-      categories, 
-      ingredients, 
+    const {
+      title,
+      description,
+      categories,
+      ingredients,
       cookingTime,
-      cookingTips, 
-      benefits, 
-      kitchenHacks, 
-      youtubeVideo, 
+      cookingTips,
+      benefits,
+      kitchenHacks,
+      youtubeVideo,
+      method,
     } = req.body;
 
     const imagePaths = [];
@@ -86,11 +87,12 @@ router.post("/", upload.array("images", 5), async (req, res) => {
       categories: Array.isArray(categories) ? categories : [categories],
       images: imagePaths,
       ingredients: Array.isArray(ingredients) ? ingredients : [ingredients],
+      method: Array.isArray(method) ? method : [method],
       cookingTime,
-      cookingTips, 
-      benefits, 
-      kitchenHacks, 
-      youtubeVideo, 
+      cookingTips: Array.isArray(cookingTips) ? cookingTips : [cookingTips],
+      benefits: Array.isArray(benefits) ? benefits : [benefits],
+      kitchenHacks: Array.isArray(kitchenHacks) ? kitchenHacks : [kitchenHacks],
+      youtubeVideo,
     });
 
     await newRecipe.save();
@@ -101,7 +103,6 @@ router.post("/", upload.array("images", 5), async (req, res) => {
     res.status(500).json({ message: "Error adding recipe" });
   }
 });
-
 
 // ✅ Update a recipe
 router.put(
@@ -117,10 +118,11 @@ router.put(
         categories,
         ingredients,
         cookingTime,
-        cookingTips, // ✅ New Field
-        benefits, // ✅ New Field
-        kitchenHacks, // ✅ New Field
-        youtubeVideo, // ✅ New Field
+        cookingTips, 
+        benefits, 
+        kitchenHacks, 
+        youtubeVideo, 
+        method,
       } = req.body;
 
       const existingRecipe = await Recipe.findById(req.params.id);
@@ -151,17 +153,22 @@ router.put(
           description,
           categories: Array.isArray(categories) ? categories : [categories],
           ingredients: Array.isArray(ingredients) ? ingredients : [ingredients],
+          method: Array.isArray(method) ? method : [method],
           cookingTime,
-          cookingTips, 
-          benefits, 
-          kitchenHacks, 
-          youtubeVideo, 
+          cookingTips: Array.isArray(cookingTips) ? cookingTips : [cookingTips],
+          benefits: Array.isArray(benefits) ? benefits : [benefits],
+          kitchenHacks: Array.isArray(kitchenHacks)
+            ? kitchenHacks
+            : [kitchenHacks],
+          youtubeVideo,
           images: imagePaths,
         },
         { new: true }
       );
 
-      res.status(200).json({ message: "Recipe updated", recipe: updatedRecipe });
+      res
+        .status(200)
+        .json({ message: "Recipe updated", recipe: updatedRecipe });
     } catch (error) {
       console.error("Error updating recipe:", error);
       res.status(500).json({ message: "Error updating recipe" });
@@ -183,12 +190,11 @@ router.delete("/:id", authMiddleware, adminMiddleware, async (req, res) => {
 });
 
 // ✅ Get recipe details by token
-router.get("/:token", async (req, res) => {
+router.get("/:recipeId", async (req, res) => {
   try {
-    const { token } = req.params;
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const { recipeId } = req.params;
 
-    const recipe = await Recipe.findById(decoded.recipeId);
+    const recipe = await Recipe.findById(recipeId);
     if (!recipe) {
       return res.status(404).json({ message: "Recipe not found" });
     }
@@ -197,6 +203,97 @@ router.get("/:token", async (req, res) => {
   } catch (error) {
     console.error("Error decoding token:", error);
     res.status(500).json({ message: "Error fetching recipe details" });
+  }
+});
+
+// ✅ Submit a rating for a recipe by recipeId
+router.post("/:recipeId/rate", authMiddleware, async (req, res) => {
+  // Add authMiddleware here
+  const { recipeId } = req.params;
+  const rating = parseInt(req.body.rating, 10);
+
+  console.log("Rating received:", rating);
+
+  if (isNaN(rating)) {
+    return res.status(400).json({ message: "Invalid rating value" });
+  }
+
+  try {
+    if (rating < 1 || rating > 5) {
+      return res
+        .status(400)
+        .json({ message: "Rating must be between 1 and 5" });
+    }
+
+    // Find the recipe by ID
+    const recipe = await Recipe.findById(recipeId);
+    if (!recipe) {
+      return res.status(404).json({ message: "Recipe not found" });
+    }
+    console.log("recipe ", recipe);
+
+    // Check if the user has already rated the recipe
+    const existingRating = recipe.ratings.find(
+      (r) => r.user.toString() === req.user._id.toString()
+    );
+    if (existingRating) {
+      return res
+        .status(400)
+        .json({ message: "You have already rated this recipe" });
+    }
+
+    // Add the new rating
+    recipe.ratings.push({ user: req.user._id, rating });
+
+    // Calculate the new average rating
+    const totalRatings = recipe.ratings.length;
+    const sumRatings = recipe.ratings.reduce(
+      (sum, r) => sum + (isNaN(r.rating) ? 0 : r.rating),
+      0
+    );
+
+    // Ensure averageRating is a valid number
+    const newAverageRating = totalRatings > 0 ? sumRatings / totalRatings : 0;
+
+    // Update the averageRating field in the recipe
+    recipe.averageRating = newAverageRating;
+
+    // Save the recipe with updated ratings and average
+    await recipe.save();
+
+    console.log("Rating submitted successfully:", recipe.averageRating); // Log the new average rating
+
+    res
+      .status(200)
+      .json({
+        message: "Rating submitted successfully",
+        averageRating: recipe.averageRating,
+      });
+  } catch (error) {
+    console.error("Error submitting rating:", error);
+    res.status(500).json({ message: "Error submitting rating" });
+  }
+});
+
+// ✅ GET ratings for a recipe by token
+router.get("/:recipeId/ratings", async (req, res) => {
+  try {
+    const { recipeId } = req.params;
+    // Find the recipe by ID and populate the ratings
+    const recipe = await Recipe.findById(recipeId).populate(
+      "ratings.user",
+      "username"
+    ); // Optional, to include user info
+    if (!recipe) {
+      return res.status(404).json({ message: "Recipe not found" });
+    }
+
+    console.log("Ratings fetched for recipe:", recipe.ratings); // Log the fetched ratings
+
+    res.status(200).json(recipe.ratings); // Return only the ratings
+  } catch (error) {
+    console.error("Error fetching ratings:", error);
+    res.status(500).json({ message: "Error fetching ratings" });
   }
 });
 

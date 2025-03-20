@@ -1,6 +1,7 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import "../css/Navbar.css"; // Import CSS
+import logo from "/logo.png"; 
 
 const Navbar = () => {
   const location = useLocation();
@@ -13,7 +14,7 @@ const Navbar = () => {
   useEffect(() => {
     const token = localStorage.getItem("token");
     setIsLoggedIn(!!token);
-  }, [location.pathname]); // Update on route change
+  }, [location.pathname]);
 
   // Close navbar when clicking outside
   useEffect(() => {
@@ -31,9 +32,9 @@ const Navbar = () => {
 
   // Handle Logout
   const handleLogout = () => {
-    localStorage.removeItem("token"); // Remove token
-    setIsLoggedIn(false); // Update state
-    navigate("/login"); // Redirect to login page
+    localStorage.removeItem("token");
+    setIsLoggedIn(false);
+    navigate("/login");
   };
 
   // Hide navbar on Admin Dashboard
@@ -42,32 +43,30 @@ const Navbar = () => {
   return (
     <nav className="navbar" ref={navRef}>
       <div className="nav-container">
-        <Link to="/" className="nav-logo">Sonia's Cooking</Link>
+        {/* ✅ Logo beside title */}
+        <Link to="/" className="nav-logo">
+          <img src={logo} alt="Logo" className="nav-logo-img" />
+          <span className="nav-title">Sonia's Cooking</span>
+        </Link>
 
-        {/* Hamburger Icon */}
-        <div className="hamburger" onClick={() => setIsOpen(!isOpen)}>
-          <span className={`bar ${isOpen ? "open" : ""}`}></span>
-          <span className={`bar ${isOpen ? "open" : ""}`}></span>
-          <span className={`bar ${isOpen ? "open" : ""}`}></span>
+        {/* 🔥 Modernized Hamburger Menu */}
+        <div className={`hamburger ${isOpen ? "active" : ""}`} onClick={() => setIsOpen(!isOpen)}>
+          <span></span>
+          <span></span>
+          <span></span>
         </div>
 
-        {/* Navigation Links */}
+        {/* 🔥 Fixed Nav Links */}
         <ul className={`nav-links ${isOpen ? "active" : ""}`}>
           <li><Link to="/" onClick={() => setIsOpen(false)}>Home</Link></li>
           <li><Link to="/about" onClick={() => setIsOpen(false)}>About</Link></li>
-          <li><Link to="/contact" onClick={() => setIsOpen(false)}>Contact</Link></li>
-
           {isLoggedIn ? (
             <li>
-              <button className="nav-logout" onClick={handleLogout}>
-                Logout
-              </button>
+              <button className="nav-logout" onClick={handleLogout}>Logout</button>
             </li>
           ) : (
             <li>
-              <Link to="/login" className="nav-login" onClick={() => setIsOpen(false)}>
-                Login
-              </Link>
+              <Link to="/login" className="nav-login" onClick={() => setIsOpen(false)}>Login</Link>
             </li>
           )}
         </ul>

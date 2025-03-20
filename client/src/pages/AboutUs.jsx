@@ -1,21 +1,53 @@
+import "../css/AboutUs.css"; // Import the modern CSS
+
 const AboutUs = () => {
   return (
-    <div>
+    <div className="about-container">
       <h1>About Us</h1>
       <p>
-        Why Choose Dr. G for PLAB Mocks? At Dr. G, we specialize in PLAB mock
-        exams to help candidates refine their skills and boost their confidence.
-        Unlike traditional coaching, we focus exclusively on mock exams,
-        ensuring a real exam-like experience with targeted feedback. What We
-        Offer: ✅ Individual Focus – Small group sessions allow us to assess
-        each candidate’s strengths and weaknesses. ✅ Interactive & Realistic
-        Mocks – System-wise structured exams to simulate actual PLAB scenarios.
-        ✅ Detailed Feedback – Personalized performance reviews to help you
-        improve in every domain. ✅ Efficient Exam Preparation – No time wasted
-        on teaching—just focused, result-driven mock exams. If you're looking
-        for the most effective way to prepare for PLAB, Dr. G is your one-stop
-        destination for high-quality mock exams and expert feedback. .
+        Welcome to <strong>My Cooking Channel</strong>, where we turn simple ingredients into mouthwatering dishes!  
+        Cooking is not just about food; it’s an <strong>art, passion, and love</strong> that brings people together.  
       </p>
+
+      <h2>🎬 Our YouTube Channel</h2>
+      <p>
+        At <strong>My Cooking Channel</strong>, we share **delicious recipes**, **cooking tips**, and **step-by-step guides**  
+        to help you become a master chef in your own kitchen. Whether you're a beginner or a seasoned cook,  
+        you’ll find something exciting to try.  
+      </p>
+      <p>
+        Our videos cover:
+        <ul>
+          <li>🍜 **Quick & Easy Recipes** for busy days</li>
+          <li>🍰 **Desserts & Baking** to satisfy your sweet tooth</li>
+          <li>🌱 **Healthy & Nutritious Meals** for a balanced diet</li>
+          <li>🔥 **Traditional & Modern Dishes** with a twist</li>
+        </ul>
+      </p>
+
+      <h2>👨‍🍳 Why Choose Us?</h2>
+      <p>
+        We believe that <strong>cooking should be fun and effortless</strong>.  
+        Our recipes are <strong>well-explained, easy to follow, and absolutely delicious</strong>.  
+        Every dish is crafted with love, ensuring the best flavors in every bite.  
+      </p>
+
+      <h2>📲 Connect With Us</h2>
+      <p>
+        Follow us on social media and stay updated with our latest recipes, cooking tips, and behind-the-scenes moments!  
+      </p>
+
+      <div className="social-links">
+        <a href="https://www.instagram.com/sonias_cooking25" target="_blank" className="social-btn instagram">
+          📸 Follow on <strong>&nbsp;Instagram</strong>
+        </a>
+        <a href="https://wa.me/919001286364" target="_blank" className="social-btn whatsapp">
+          💬 Chat on <strong>&nbsp;WhatsApp</strong>
+        </a>
+        <a href="https://www.youtube.com/channel/UC5E8CDOgZKHj94NovE_FBmw" target="_blank" className="social-btn youtube">
+          🎥 Subscribe on <strong> &nbsp;YouTube</strong>
+        </a>
+      </div>
     </div>
   );
 };

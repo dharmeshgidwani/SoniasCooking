@@ -26,10 +26,9 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="recipe/:token" element={<Recipe />} />
+          <Route path="recipe/:recipeId" element={<Recipe />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/contact" element={<ContactUs />} />
           <Route path="/about" element={<AboutUs />} />
           <Route
             path="/admin"

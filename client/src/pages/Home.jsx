@@ -25,10 +25,10 @@ const Home = () => {
     fetchRecipes();
   }, []);
 
-  // Categories for filtering
-  const filters = ["All", "Veg", "Non-Veg", "Snacks", "Breakfast", "Dessert"];
+  // Recipe categories for filtering
+  const filters = ["All", "Veg", "Non-Veg", "Snacks", "Breakfast", "Dessert", "Lunch"];
 
-  // Filter recipes based on search, selected category, and ingredient search
+  // Filter recipes based on search input and selected category
   const filteredRecipes = recipes.filter((recipe) => {
     const matchesSearch =
       recipe.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -44,37 +44,38 @@ const Home = () => {
 
   return (
     <div className="home-container">
-      {/* Hero Section */}
+    
       <section className="hero-section">
         <div className="hero-text">
           <h1>
             Welcome to <span className="highlight">Sonia's Cooking</span>
           </h1>
           <p>
-            Explore a world of **delicious homemade recipes**. Whether you're a
-            beginner or a kitchen expert, discover easy-to-follow recipes that
-            bring amazing flavors to your table.
+            Discover a variety of{" "}
+            <strong>easy and delicious homemade recipes</strong>. From quick
+            snacks to gourmet meals, find step-by-step guides that make cooking{" "}
+            <strong>fun and simple!</strong>
           </p>
         </div>
       </section>
 
-      {/* Highlights Section */}
+      {/* ✅ Modern Highlights Section */}
       <section className="highlights-section">
         <div className="highlight-box">
-          <h3>🔥 New Recipes Daily</h3>
-          <p>Get **fresh and trending** recipes updated regularly.</p>
+          <h3>🍽️ Fresh Recipes Daily</h3>
+          <p>Explore new and trending recipes updated regularly.</p>
         </div>
         <div className="highlight-box">
-          <h3>📺 Step-by-Step Videos</h3>
-          <p>Follow along with **detailed YouTube tutorials**.</p>
+          <h3>🎥 Video Tutorials</h3>
+          <p>Step-by-step videos to guide your cooking journey.</p>
         </div>
         <div className="highlight-box">
-          <h3>✨ Expert Cooking Tips</h3>
-          <p>Learn **pro cooking tricks** to enhance your skills.</p>
+          <h3>👨‍🍳 Pro Cooking Tips</h3>
+          <p>Expert tips to enhance your kitchen skills.</p>
         </div>
       </section>
 
-      {/* Search & Filter Section */}
+      {/* ✅ Search & Filter Section */}
       <div className="search-filter-container">
         <div className="search-container">
           <input
@@ -100,11 +101,11 @@ const Home = () => {
         </div>
       </div>
 
-      {/* Show All Recipes */}
-      <h2 className="recipes-heading">🍽️ Latest Recipes</h2>
+      {/* ✅ Recipe List */}
+      <h2 className="recipes-heading">🍳 Latest Recipes</h2>
 
       {loading ? (
-        <p className="loading-text">Loading...</p>
+        <p className="loading-text">Fetching recipes, please wait...</p>
       ) : (
         <div className="recipes-grid">
           {filteredRecipes.length > 0 ? (
@@ -112,7 +113,9 @@ const Home = () => {
               <RecipeCard key={recipe._id || index} recipe={recipe} />
             ))
           ) : (
-            <p className="no-results">No recipes found.</p>
+            <p className="no-results">
+              No matching recipes found. Try a different search!
+            </p>
           )}
         </div>
       )}
@@ -120,30 +123,33 @@ const Home = () => {
   );
 };
 
-// ✅ Updated RecipeCard Component 
+// ✅ Updated RecipeCard Component
 const RecipeCard = ({ recipe }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const images =
     recipe.images?.length > 0 ? recipe.images : ["/default-image.jpg"];
 
-  const handleNextImage = () => {
+  const handleNextImage = (e) => {
+    e.preventDefault(); // Prevents navigation issue
     setCurrentImageIndex((prevIndex) =>
       prevIndex === images.length - 1 ? 0 : prevIndex + 1
     );
   };
 
-  const handlePrevImage = () => {
+  const handlePrevImage = (e) => {
+    e.preventDefault();
     setCurrentImageIndex((prevIndex) =>
       prevIndex === 0 ? images.length - 1 : prevIndex - 1
     );
   };
 
   return (
-    <Link to={`/recipe/${recipe.token}`} className="recipe-link">
+    <Link to={`/recipe/${recipe._id}`} className="recipe-link">
       <div className="recipe-card">
+        {/* ✅ Image Slider */}
         <div className="image-slider">
           {images.length > 1 && (
-            <button className="prev-btn" onClick={(e) => { e.preventDefault(); handlePrevImage(); }}>
+            <button className="prev-btn" onClick={handlePrevImage}>
               ❮
             </button>
           )}
@@ -153,19 +159,25 @@ const RecipeCard = ({ recipe }) => {
               ?.split("/")
               .pop()}`}
             className="recipe-image"
+            alt={recipe.title}
             onError={(e) => (e.target.src = "/default-image.jpg")}
           />
 
           {images.length > 1 && (
-            <button className="next-btn" onClick={(e) => { e.preventDefault(); handleNextImage(); }}>
+            <button className="next-btn" onClick={handleNextImage}>
               ❯
             </button>
           )}
         </div>
 
+        {/* ✅ Recipe Details */}
         <div className="recipe-info">
           <h3 className="recipe-title">{recipe.title}</h3>
-          <p className="recipe-description">{recipe.description}</p>
+          <p className="recipe-description">
+            {recipe.description.length > 100
+              ? recipe.description.substring(0, 100) + "..."
+              : recipe.description}
+          </p>
         </div>
       </div>
     </Link>

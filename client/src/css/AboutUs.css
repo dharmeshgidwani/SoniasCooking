@@ -1,0 +1,161 @@
+/* 🎨 About Us Page */
+.about-container {
+  max-width: 900px;
+  margin: auto;
+  padding: 40px 20px;
+  text-align: center;
+  font-family: "Poppins", sans-serif;
+  background: white;
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+/* 🌟 Title */
+.about-container h1 {
+  font-size: 2.5rem;
+  color: #d40000;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+/* 🔥 Section Headings */
+.about-container h2 {
+  font-size: 1.8rem;
+  color: #a30000;
+  margin-top: 30px;
+  font-weight: 600;
+  position: relative;
+}
+
+/* 🎭 Section Underline */
+.about-container h2::after {
+  content: "";
+  display: block;
+  width: 60px;
+  height: 4px;
+  background: #d40000;
+  margin: 8px auto 0;
+  border-radius: 10px;
+}
+
+/* 📌 Paragraph */
+.about-container p {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #333;
+  margin: 10px 0;
+}
+
+/* 🍽️ Bullet Points */
+.about-container ul {
+  text-align: left;
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+}
+
+.about-container li {
+  padding: 12px;
+  font-size: 1.1rem;
+  background: rgba(255, 0, 0, 0.05);
+  border-radius: 8px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  transition: all 0.3s ease-in-out;
+}
+
+.about-container li:hover {
+  background: rgba(255, 0, 0, 0.15);
+  transform: scale(1.02);
+}
+
+/* 🏆 List Icons */
+.about-container li::before {
+  content: "🍽️";
+  margin-right: 12px;
+  font-size: 1.2rem;
+}
+
+/* 📲 Social Media Buttons */
+.social-links {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.social-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  color: white;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* 🎨 Social Media Colors */
+.instagram {
+  background: linear-gradient(45deg, #fccc63, #bc2a8d, #e95950);
+}
+
+.whatsapp {
+  background: #25d366;
+}
+
+.youtube {
+  background: #ff0000;
+}
+
+/* 🎭 Hover Effects */
+.social-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3);
+}
+
+/* 🔥 Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 📱 Responsive */
+@media (max-width: 768px) {
+  .about-container {
+    padding: 30px 15px;
+  }
+
+  .about-container h1 {
+    font-size: 2rem;
+  }
+
+  .about-container h2 {
+    font-size: 1.6rem;
+  }
+
+  .about-container p,
+  .about-container li {
+    font-size: 1rem;
+  }
+
+  .social-links {
+    flex-direction: column;
+  }
+
+  .social-btn {
+    width: 80%;
+    margin: 5px auto;
+  }
+}

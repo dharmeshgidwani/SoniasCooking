@@ -1,44 +1,69 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import "../css/Signup.css"; // Import updated CSS
 
 const Signup = () => {
   const [form, setForm] = useState({ name: "", email: "", phone: "", password: "" });
   const [otp, setOtp] = useState("");
-  const [showOtpField, setShowOtpField] = useState(false);
+  const [isOtpModalOpen, setIsOtpModalOpen] = useState(false);
+  const navigate = useNavigate(); // Initialize navigate
 
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
-  const handleSignup = async () => {
+  const handleSignup = async (e) => {
+    e.preventDefault(); 
     try {
+      toast.info("Sending OTP... Please wait."); 
       await axios.post("http://localhost:5001/api/auth/signup", form);
-      setShowOtpField(true);
+      toast.success("Signup successful! OTP sent to your email.");
+      setIsOtpModalOpen(true);
     } catch (error) {
-      alert(error.response.data.message);
+      toast.error(error.response?.data?.message || "Signup failed");
     }
   };
 
   const handleVerifyOTP = async () => {
     try {
       await axios.post("http://localhost:5001/api/auth/verify-otp", { email: form.email, otp });
-      alert("Email Verified! Please login.");
+      toast.success("Email Verified! Redirecting to home...");
+      setIsOtpModalOpen(false);
+      setForm({ name: "", email: "", phone: "", password: "" });
+      setOtp("");
+
+      setTimeout(() => navigate("/"), 1000);
     } catch (error) {
-      alert(error.response.data.message);
+      toast.error(error.response?.data?.message || "OTP verification failed");
     }
   };
 
   return (
-    <div>
-      <h2>Signup</h2>
-      <input type="text" name="name" placeholder="Name" onChange={handleChange} />
-      <input type="email" name="email" placeholder="Email" onChange={handleChange} />
-      <input type="text" name="phone" placeholder="Phone Number" onChange={handleChange} />
-      <input type="password" name="password" placeholder="Password" onChange={handleChange} />
-      <button onClick={handleSignup}>Signup</button>
+    <div className="signup-container">
+      <ToastContainer position="top-right" autoClose={3000} />
 
-      {showOtpField && (
+      <div className="signup-box">
+        <h2>Signup</h2>
+        <form onSubmit={handleSignup}> {/* 🔹 Wrap in form */}
+          <input type="text" name="name" placeholder="Name" value={form.name} onChange={handleChange} required />
+          <input type="email" name="email" placeholder="Email" value={form.email} onChange={handleChange} required />
+          <input type="text" name="phone" placeholder="Phone Number" value={form.phone} onChange={handleChange} required />
+          <input type="password" name="password" placeholder="Password" value={form.password} onChange={handleChange} required />
+          <button type="submit">Signup</button> 
+        </form>
+      </div>
+
+      {/* OTP Modal */}
+      {isOtpModalOpen && (
         <>
-          <input type="text" placeholder="Enter OTP" onChange={(e) => setOtp(e.target.value)} />
-          <button onClick={handleVerifyOTP}>Verify OTP</button>
+          <div className="modal-overlay" onClick={() => setIsOtpModalOpen(false)}></div>
+          <div className="otp-modal">
+            <span className="close-btn" onClick={() => setIsOtpModalOpen(false)}>&times;</span>
+            <h3>Verify OTP</h3>
+            <input type="text" placeholder="Enter OTP" value={otp} onChange={(e) => setOtp(e.target.value)} />
+            <button onClick={handleVerifyOTP}>Verify OTP</button>
+          </div>
         </>
       )}
     </div>

@@ -3,7 +3,14 @@ import axios from "axios";
 import "../css/AdminDashboard.css"; // Import the CSS file
 import imageCompression from "browser-image-compression";
 
-const categoryOptions = ["Veg", "Non-Veg", "Snacks", "Breakfast", "Dessert"];
+const categoryOptions = [
+  "Veg",
+  "Non-Veg",
+  "Snacks",
+  "Breakfast",
+  "Dessert",
+  "Lunch",
+];
 
 const AdminDashboard = () => {
   const [recipes, setRecipes] = useState([]);
@@ -13,12 +20,13 @@ const AdminDashboard = () => {
   const [ingredients, setIngredients] = useState([]);
   const [images, setImages] = useState([]);
   const [categories, setCategories] = useState([]);
-  const [cookingTips, setCookingTips] = useState("");
-  const [benefits, setBenefits] = useState("");
-  const [kitchenHacks, setKitchenHacks] = useState("");
+  const [cookingTips, setCookingTips] = useState([]);
+  const [benefits, setBenefits] = useState([]);
+  const [kitchenHacks, setKitchenHacks] = useState([]);
   const [youtubeVideo, setYoutubeVideo] = useState("");
   const [editingRecipe, setEditingRecipe] = useState(null);
   const [view, setView] = useState("add");
+  const [method, setMethod] = useState([]);
 
   useEffect(() => {
     fetchRecipes();
@@ -64,7 +72,21 @@ const AdminDashboard = () => {
 
   const handleIngredientsChange = (e) => {
     const value = e.target.value;
-    setIngredients(value.split("\n")); // ✅ Splitting ingredients by new line
+    setIngredients(value.split("\n"));
+  };
+  const handleCookingTipsChange = (e) => {
+    const value = e.target.value;
+    setCookingTips(value.split("\n"));
+  };
+
+  const handleBenefitsChange = (e) => {
+    const value = e.target.value;
+    setBenefits(value.split("\n"));
+  };
+
+  const handleKitchenHacksChange = (e) => {
+    const value = e.target.value;
+    setKitchenHacks(value.split("\n"));
   };
 
   const handleAddOrUpdateRecipe = async (e) => {
@@ -85,10 +107,12 @@ const AdminDashboard = () => {
     formData.append("title", title);
     formData.append("description", description);
     formData.append("cookingTime", cookingTime);
-    formData.append("cookingTips", cookingTips);
-    formData.append("benefits", benefits);
-    formData.append("kitchenHacks", kitchenHacks);
     formData.append("youtubeVideo", youtubeVideo);
+
+    cookingTips.forEach((ct) => formData.append("cookingTips", ct));
+    benefits.forEach((b) => formData.append("benefits", b));
+    kitchenHacks.forEach((kh) => formData.append("kitchenHacks", kh));
+    method.forEach((step) => formData.append("method", step));
 
     ingredients.forEach((ingredient) =>
       formData.append("ingredients", ingredient)
@@ -125,7 +149,12 @@ const AdminDashboard = () => {
       setIngredients([]);
       setCategories([]);
       setImages([]);
+      setBenefits([]);
+      setCookingTips([]);
+      setKitchenHacks([]);
+      setYoutubeVideo("");
       setEditingRecipe(null);
+      setMethod([]);
       fetchRecipes();
       setView("add");
     } catch (error) {
@@ -140,12 +169,13 @@ const AdminDashboard = () => {
     setCookingTime(recipe.cookingTime);
     setIngredients(recipe.ingredients);
     setCategories(recipe.categories);
-    setCookingTips(recipe.cookingTips || "");
-    setBenefits(recipe.benefits || "");
-    setKitchenHacks(recipe.kitchenHacks || "");
+    setCookingTips(recipe.cookingTips);
+    setBenefits(recipe.benefits);
+    setKitchenHacks(recipe.kitchenHacks);
     setYoutubeVideo(recipe.youtubeVideo || "");
     setImages([]);
     setEditingRecipe(recipe);
+    setMethod(recipe.method);
     setView("add");
   };
 
@@ -175,6 +205,36 @@ const AdminDashboard = () => {
     }
   };
 
+  const handleViewRatings = async (recipeToken) => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      alert("You must be logged in to view ratings.");
+      return;
+    }
+
+    console.log("Token for viewing ratings:", token);
+
+    try {
+      const response = await axios.get(
+        `http://localhost:5001/api/recipes/${recipeToken}/ratings`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Sending the token in the header
+          },
+        }
+      );
+      console.log("Ratings response:", response.data); // Log the response from the server
+      alert(JSON.stringify(response.data, null, 2)); // Display the ratings
+    } catch (error) {
+      console.error("Error fetching ratings:", error);
+      alert("Failed to fetch ratings");
+    }
+  };
+  const handleMethodChange = (e) => {
+    const value = e.target.value;
+    setMethod(value.split("\n"));
+  };
+
   return (
     <div className="admin-container">
       <h1 className="admin-title">Admin Dashboard</h1>
@@ -189,6 +249,9 @@ const AdminDashboard = () => {
         </button>
         <button onClick={() => setView("delete")} className="delete-btn">
           Delete Recipe
+        </button>
+        <button onClick={() => setView("ratings")} className="ratings-btn">
+          View Ratings
         </button>
       </div>
 
@@ -208,6 +271,12 @@ const AdminDashboard = () => {
             onChange={(e) => setDescription(e.target.value)}
             required
           ></textarea>
+          <textarea
+            placeholder="Method of Recipe (one step per line)"
+            value={method.join("\n")}
+            onChange={handleMethodChange}
+            required
+          ></textarea>
           <input
             type="text"
             placeholder="Cooking Time (minutes)"
@@ -223,20 +292,20 @@ const AdminDashboard = () => {
           ></textarea>
 
           <textarea
-            placeholder="Cooking Tips"
-            value={cookingTips}
-            onChange={(e) => setCookingTips(e.target.value)}
-          ></textarea>
+            placeholder="Cooking Tips (one per line)"
+            value={cookingTips.join("\n")}
+            onChange={handleCookingTipsChange}
+          />
           <textarea
-            placeholder="Benefits"
-            value={benefits}
-            onChange={(e) => setBenefits(e.target.value)}
-          ></textarea>
+            placeholder="Benefits (one per line)"
+            value={benefits.join("\n")}
+            onChange={handleBenefitsChange}
+          />
           <textarea
-            placeholder="Kitchen Hacks"
-            value={kitchenHacks}
-            onChange={(e) => setKitchenHacks(e.target.value)}
-          ></textarea>
+            placeholder="Kitchen Hacks (one per line)"
+            value={kitchenHacks.join("\n")}
+            onChange={handleKitchenHacksChange}
+          />
           <input
             type="text"
             placeholder="YouTube Video Link"
@@ -279,6 +348,10 @@ const AdminDashboard = () => {
               >
                 <h2>{recipe.title}</h2>
                 <p>{recipe.description}</p>
+                <p>
+                  <strong>Average Rating:</strong>{" "}
+                  {recipe.averageRating || "Not Rated"}
+                </p>
               </div>
             ))}
           </div>
@@ -298,6 +371,26 @@ const AdminDashboard = () => {
                   onClick={() => handleDelete(recipe._id)}
                 >
                   Delete
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+      {view === "ratings" && (
+        <div>
+          <h2>Recipe Ratings</h2>
+          <div className="recipe-grid">
+            {recipes.map((recipe) => (
+              <div key={recipe._id} className="recipe-card">
+                <h2>{recipe.title}</h2>
+                <p>{recipe.description}</p>
+                <p>
+                  <strong>Average Rating:</strong>{" "}
+                  {recipe.averageRating || "Not Rated"}
+                </p>
+                <button onClick={() => handleViewRatings(recipe.token)}>
+                  View Ratings
                 </button>
               </div>
             ))}
