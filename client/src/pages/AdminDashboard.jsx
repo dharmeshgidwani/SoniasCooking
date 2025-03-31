@@ -112,7 +112,7 @@ const AdminDashboard = () => {
     cookingTips.forEach((ct) => formData.append("cookingTips", ct));
     benefits.forEach((b) => formData.append("benefits", b));
     kitchenHacks.forEach((kh) => formData.append("kitchenHacks", kh));
-    method.forEach((step) => formData.append("method", step));
+    method.forEach((mtd) => formData.append("method", mtd));
 
     ingredients.forEach((ingredient) =>
       formData.append("ingredients", ingredient)

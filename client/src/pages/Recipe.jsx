@@ -184,6 +184,7 @@ const Recipe = () => {
   console.log("kh----", recipe.kitchenHacks);
   console.log("ct", recipe.cookingTips);
   console.log("b", recipe.benefits);
+  console.log("mrehtod", recipe.method);
 
   return (
     <div className="recipe-container">
@@ -267,7 +268,7 @@ const Recipe = () => {
           <ol className="method-list">
             {recipe.method.map((step, index) => (
               <li key={index} className="method-item">
-                <strong>Step {index + 1}:</strong> {step}
+                {step}
               </li>
             ))}
           </ol>

@@ -51,7 +51,7 @@ body {
   margin-bottom: 25px;
 }
 
-/* 📝 Recipe Description */
+/* Recipe Description */
 .recipe-description {
   font-size: 1.4rem;
   line-height: 1.8;
@@ -68,7 +68,7 @@ body {
   box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
 }
 
-/* ⏳ Cooking Time */
+/* Cooking Time */
 .recipe-time {
   font-size: 1.2rem;
   padding: 15px;
@@ -87,50 +87,17 @@ body {
   font-size: 1.5rem;
 }
 
-/* 🥗 Ingredients List */
-.ingredients-list {
-  list-style: none;
+/* General List Styles */
+ul {
   padding: 0;
-}
-
-.ingredient-item {
-  background: #fff;
-  margin: 10px 0;
-  padding: 15px;
-  border-radius: 8px;
-  font-size: 1.2rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
-  position: relative;
-}
-
-.ingredient-item:hover {
-  background: #ffe5e7;
-  transform: scale(1.02);
-}
-
-.ingredient-item span {
-  font-weight: bold;
-  color: #e63946;
-}
-
-.ingredient-item::after {
-  content: "✔";
-  font-size: 1.5rem;
-  color: #4caf50;
-  position: absolute;
-  right: 10px;
-}
-
-/* Benefits List */
-.benefit-list {
   list-style: none;
-  padding: 0;
 }
 
+/* Common Styles for List Items */
+.ingredient-item,
+.hack-item,
+.method-item,
+.tip-item,
 .benefit-item {
   background: #fff;
   padding: 15px 20px;
@@ -140,97 +107,53 @@ body {
   font-weight: 500;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   box-shadow: 0px 3px 12px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
   position: relative;
+  overflow: hidden;
 }
 
+.ingredient-item:hover,
+.hack-item:hover,
+.method-item:hover,
+.tip-item:hover,
 .benefit-item:hover {
-  transform: translateX(5px);
   background: #ffe5e7;
+  transform: translateX(5px);
   box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
 }
 
-/* Custom Bullet Icon */
+/* Custom Bullet Icons */
+.ingredient-item::before,
+.hack-item::before,
+.tip-item::before,
 .benefit-item::before {
-  content: "✔";  /* Or use a custom icon */
-  font-size: 1.5rem;
+  content: "✔";
+  font-size: 1.4rem;
   color: #e63946;
   font-weight: bold;
 }
 
-/* Cooking tips List */
-.tip-list {
-  list-style: none;
-  padding: 0;
+/* Step Numbering for Method List */
+.method-item {
+  counter-increment: step-counter;
 }
 
-.tip-item {
-  background: #fff;
-  padding: 15px 20px;
-  margin: 10px 0;
-  border-radius: 10px;
-  font-size: 1.2rem;
-  font-weight: 500;
+.method-item::before {
+  content: counter(step-counter);
+  font-size: 1.4rem;
+  font-weight: bold;
+  background: #e63946;
+  color: white;
+  width: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
-  gap: 10px;
-  box-shadow: 0px 3px 12px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
-  position: relative;
+  justify-content: center;
+  border-radius: 50%;
+  box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.15);
 }
-
-.tip-item:hover {
-  transform: translateX(5px);
-  background: #ffe5e7;
-  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
-}
-
-/* Custom Bullet Icon */
-.tip-item::before {
-  content: "✔";  /* Or use a custom icon */
-  font-size: 1.5rem;
-  color: #e63946;
-  font-weight: bold;
-}
-
-/* KitchenHacks List */
-.hack-list {
-  list-style: none;
-  padding: 0;
-}
-
-.hack-item {
-  background: #fff;
-  padding: 15px 20px;
-  margin: 10px 0;
-  border-radius: 10px;
-  font-size: 1.2rem;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  box-shadow: 0px 3px 12px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
-  position: relative;
-}
-
-.hack-item:hover {
-  transform: translateX(5px);
-  background: #ffe5e7;
-  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
-}
-
-/* Custom Bullet Icon */
-.hack-item::before {
-  content: "✔";  /* Or use a custom icon */
-  font-size: 1.5rem;
-  color: #e63946;
-  font-weight: bold;
-}
-
-
 
 /* Rating Section */
 .rating-section {
@@ -245,20 +168,6 @@ body {
 
 .rating-section:hover {
   box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.2);
-}
-
-/* Section Title */
-.section-title {
-  font-size: 1.8rem;
-  font-weight: bold;
-  color: #d62828;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: 15px;
-  padding: 10px;
-  background: #ffe5e7;
-  border-radius: 8px;
-  display: inline-block;
 }
 
 /* Star Rating */
@@ -297,21 +206,7 @@ body {
   color: #ffcc00;
 }
 
-/* Average Rating */
-.average-rating {
-  margin-top: 15px;
-  font-size: 1.2rem;
-  font-weight: bold;
-  color: #333;
-  background: #f8f9fa;
-  padding: 10px;
-  border-radius: 8px;
-  display: inline-block;
-  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-
-/* 📄 Save as PDF Button */
+/* Save as PDF Button */
 .save-pdf-button-container {
   display: flex;
   justify-content: center;
@@ -365,11 +260,6 @@ body {
   .recipe-description, .recipe-time {
     font-size: 1.1rem;
   }
-
-  .prev-btn, .next-btn {
-    font-size: 1.5rem;
-    padding: 8px;
-  }
 }
 
 @media (max-width: 480px) {
@@ -381,13 +271,74 @@ body {
     font-size: 1rem;
   }
 
-  .prev-btn, .next-btn {
-    font-size: 1.2rem;
-    padding: 6px;
-  }
-
   .save-pdf-btn {
     font-size: 1rem;
     padding: 12px 25px;
   }
+}
+.method-container {
+  padding: 25px;
+  background: rgba(255, 240, 240, 0.8);
+  border-radius: 15px;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.method-container:hover {
+  transform: translateY(-5px);
+}
+
+.method-list {
+  list-style: none;
+  counter-reset: step-counter;
+  padding: 0;
+}
+
+.method-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  padding: 15px;
+  background: #fff;
+  border-radius: 10px;
+  margin: 10px 0;
+  box-shadow: 0px 3px 12px rgba(0, 0, 0, 0.1);
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.method-item:hover {
+  transform: translateX(5px);
+  background: #ffe5e7;
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.method-item::before {
+  content: counter(step-counter);
+  font-size: 1.4rem;
+  font-weight: bold;
+  background: #e63946;
+  color: white;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.15);
+}
+.ingredient-item::before {
+  content: "🍴";
+}
+
+.hack-item::before {
+  content: "💡";
+}
+
+.tip-item::before {
+  content: "✅";
+}
+
+.benefit-item::before {
+  content: "💖";
 }
