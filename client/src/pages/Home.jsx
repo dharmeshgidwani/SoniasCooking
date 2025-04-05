@@ -12,7 +12,7 @@ const Home = () => {
   useEffect(() => {
     const fetchRecipes = async () => {
       try {
-        const response = await axios.get("http://localhost:5001/api/recipes");
+        const response = await axios.get("https://soniascooking-production.up.railway.app/api/recipes");
         console.log("Recipes API Response:", response.data);
         setRecipes(response.data);
       } catch (error) {
@@ -155,7 +155,7 @@ const RecipeCard = ({ recipe }) => {
           )}
 
           <img
-            src={`http://localhost:5001/uploads/${images[currentImageIndex]
+            src={`https://soniascooking-production.up.railway.app/uploads/${images[currentImageIndex]
               ?.split("/")
               .pop()}`}
             className="recipe-image"

@@ -17,7 +17,7 @@ const Signup = () => {
     e.preventDefault(); 
     try {
       toast.info("Sending OTP... Please wait."); 
-      await axios.post("http://localhost:5001/api/auth/signup", form);
+      await axios.post("https://soniascooking-production.up.railway.app/api/auth/signup", form);
       toast.success("Signup successful! OTP sent to your email.");
       setIsOtpModalOpen(true);
     } catch (error) {
@@ -27,7 +27,7 @@ const Signup = () => {
 
   const handleVerifyOTP = async () => {
     try {
-      await axios.post("http://localhost:5001/api/auth/verify-otp", { email: form.email, otp });
+      await axios.post("https://soniascooking-production.up.railway.app/api/auth/verify-otp", { email: form.email, otp });
       toast.success("Email Verified! Redirecting to home...");
       setIsOtpModalOpen(false);
       setForm({ name: "", email: "", phone: "", password: "" });

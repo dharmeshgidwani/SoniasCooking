@@ -17,7 +17,7 @@ const Recipe = () => {
     const fetchRecipe = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5001/api/recipes/${recipeId}`
+          `https://soniascooking-production.up.railway.app/api/recipes/${recipeId}`
         );
         setRecipe(response.data);
         setRating(response.data.averageRating || 0);
@@ -143,7 +143,7 @@ const Recipe = () => {
 
     // Image (if available)
     if (recipe.images && recipe.images.length > 0) {
-      const imageUrl = `http://localhost:5001${recipe.images[0]}`;
+      const imageUrl = `https://soniascooking-production.up.railway.app${recipe.images[0]}`;
       doc.addImage(imageUrl, "JPEG", 10, 160, 180, 120); // Adding an image to PDF
     }
 
@@ -157,7 +157,7 @@ const Recipe = () => {
     try {
       // Send the rating to the backend
       const response = await axios.post(
-        `http://localhost:5001/api/recipes/${recipeId}/rate`,
+        `https://soniascooking-production.up.railway.app/api/recipes/${recipeId}/rate`,
         { rating },
         {
           headers: {
@@ -200,7 +200,7 @@ const Recipe = () => {
         )}
 
         <img
-          src={`http://localhost:5001${recipe.images[currentImageIndex]}`}
+          src={`https://soniascooking-production.up.railway.app${recipe.images[currentImageIndex]}`}
           alt={recipe.title}
           className="recipe-image"
         />

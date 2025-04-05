@@ -20,7 +20,7 @@ const Login = () => {
     // toast.info("Logging in... Please wait!", { autoClose: 2000 });
 
     try {
-      const res = await axios.post("http://localhost:5001/api/auth/login", form);
+      const res = await axios.post("https://soniascooking-production.up.railway.app/api/auth/login", form);
       const user = res.data.user;
 
       localStorage.setItem("token", res.data.token);

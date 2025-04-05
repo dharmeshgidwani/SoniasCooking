@@ -34,7 +34,7 @@ const AdminDashboard = () => {
 
   const fetchRecipes = async () => {
     try {
-      const response = await axios.get("http://localhost:5001/api/recipes");
+      const response = await axios.get("https://soniascooking-production.up.railway.app/api/recipes");
       setRecipes(response.data);
     } catch (error) {
       console.error("Error fetching recipes:", error);
