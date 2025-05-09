@@ -20,7 +20,7 @@ const Login = () => {
     // toast.info("Logging in... Please wait!", { autoClose: 2000 });
 
     try {
-      const res = await axios.post("https://soniascooking-production.up.railway.app/api/auth/login", form);
+      const res = await axios.post(`${import.meta.env.VITE_APP_API_URL}/api/auth/login`, form);
       const user = res.data.user;
 
       localStorage.setItem("token", res.data.token);

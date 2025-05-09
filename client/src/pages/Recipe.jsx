@@ -17,7 +17,7 @@ const Recipe = () => {
     const fetchRecipe = async () => {
       try {
         const response = await axios.get(
-          `https://soniascooking-production.up.railway.app/api/recipes/${recipeId}`
+          `${import.meta.env.VITE_APP_API_URL}/api/recipes/${recipeId}`
         );
         setRecipe(response.data);
         setRating(response.data.averageRating || 0);

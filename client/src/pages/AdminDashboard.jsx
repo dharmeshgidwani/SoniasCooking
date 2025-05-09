@@ -34,7 +34,7 @@ const AdminDashboard = () => {
 
   const fetchRecipes = async () => {
     try {
-      const response = await axios.get("https://soniascooking-production.up.railway.app/api/recipes");
+      const response = await axios.get(`${import.meta.env.VITE_APP_API_URL}/api/recipes`);
       setRecipes(response.data);
     } catch (error) {
       console.error("Error fetching recipes:", error);
@@ -133,13 +133,13 @@ const AdminDashboard = () => {
     try {
       if (editingRecipe) {
         await axios.put(
-          `http://localhost:5001/api/recipes/${editingRecipe._id}`,
+          `${import.meta.env.VITE_APP_API_URL}/api/recipes/${editingRecipe._id}`,
           formData,
           config
         );
         alert("Recipe updated successfully");
       } else {
-        await axios.post("http://localhost:5001/api/recipes", formData, config);
+        await axios.post(`${import.meta.env.VITE_APP_API_URL}/api/recipes`, formData, config);
         alert("Recipe added successfully");
       }
 
@@ -191,7 +191,7 @@ const AdminDashboard = () => {
     );
     if (confirmation) {
       try {
-        await axios.delete(`http://localhost:5001/api/recipes/${recipeId}`, {
+        await axios.delete(`${import.meta.env.VITE_APP_API_URL}/api/recipes/${recipeId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -216,7 +216,7 @@ const AdminDashboard = () => {
 
     try {
       const response = await axios.get(
-        `http://localhost:5001/api/recipes/${recipeToken}/ratings`,
+        `${import.meta.env.VITE_APP_API_URL}/api/recipes/${recipeToken}/ratings`,
         {
           headers: {
             Authorization: `Bearer ${token}`, // Sending the token in the header

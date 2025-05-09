@@ -17,7 +17,7 @@ const Signup = () => {
     e.preventDefault(); 
     try {
       toast.info("Sending OTP... Please wait."); 
-      await axios.post("https://soniascooking-production.up.railway.app/api/auth/signup", form);
+      await axios.post(`${import.meta.env.VITE_APP_API_URL}/api/auth/signup`, form);
       toast.success("Signup successful! OTP sent to your email.");
       setIsOtpModalOpen(true);
     } catch (error) {

@@ -12,7 +12,7 @@ const Home = () => {
   useEffect(() => {
     const fetchRecipes = async () => {
       try {
-        const response = await axios.get("https://soniascooking-production.up.railway.app/api/recipes");
+        const response = await axios.get(`${import.meta.env.VITE_APP_API_URL}/api/recipes`);
         console.log("Recipes API Response:", response.data);
         setRecipes(response.data);
       } catch (error) {

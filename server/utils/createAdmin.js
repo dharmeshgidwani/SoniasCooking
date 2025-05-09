@@ -4,9 +4,11 @@ require("dotenv").config();
 
 const User = require("../models/User"); 
 
+const MONGO_URI = process.env.MONGO_URI 
+
 const createAdmin = async () => {
   try {
-    await mongoose.connect("mongodb://localhost:27017/soniascooking", {
+    await mongoose.connect(`${MONGO_URI}`, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
