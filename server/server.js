@@ -8,9 +8,22 @@ const path = require("path");
 dotenv.config();
 connectDB();
 
+const allowedOrigins = [
+    "https://sonias-cooking.vercel.app/login"
+]
+
 const app = express();
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
+  }));
 
 app.use("/api/auth", require("./routes/authRoutes"));
 app.use("/api/recipes", require("./routes/recipeRoutes"));
