@@ -9,7 +9,7 @@ dotenv.config();
 connectDB();
 
 const allowedOrigins = [
-    "https://sonias-cooking.vercel.app/login"
+    "https://sonias-cooking.vercel.app"
 ]
 
 const app = express();
