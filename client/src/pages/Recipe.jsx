@@ -157,7 +157,7 @@ const Recipe = () => {
     try {
       // Send the rating to the backend
       const response = await axios.post(
-        `https://soniascooking-production.up.railway.app/api/recipes/${recipeId}/rate`,
+        `${import.meta.env.VITE_APP_API_URL}/api/recipes/${recipeId}/rate`,
         { rating },
         {
           headers: {
@@ -166,7 +166,6 @@ const Recipe = () => {
         }
       );
 
-      console.log("Rating submitted:", response.data);
       alert("Rating submitted successfully");
       setRating(rating);
       setUserRated(true);
@@ -181,10 +180,6 @@ const Recipe = () => {
     }
   };
 
-  console.log("kh----", recipe.kitchenHacks);
-  console.log("ct", recipe.cookingTips);
-  console.log("b", recipe.benefits);
-  console.log("mrehtod", recipe.method);
 
   return (
     <div className="recipe-container">
@@ -200,7 +195,7 @@ const Recipe = () => {
         )}
 
         <img
-          src={`https://soniascooking-production.up.railway.app${recipe.images[currentImageIndex]}`}
+          src={recipe.images[currentImageIndex]}
           alt={recipe.title}
           className="recipe-image"
         />
@@ -239,9 +234,10 @@ const Recipe = () => {
           <iframe
             width="100%"
             height="400"
-            src={`https://www.youtube.com/embed/${videoID}?autoplay=1`}
+            src={`https://www.youtube.com/embed/${videoID}?&mute=1&rel=0`}
             title="YouTube Recipe Video"
             frameBorder="0"
+            allow="autoplay; encrypted-media"
             allowFullScreen
           ></iframe>
         </div>

@@ -12,7 +12,9 @@ const Home = () => {
   useEffect(() => {
     const fetchRecipes = async () => {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_APP_API_URL}/api/recipes`);
+        const response = await axios.get(
+          `${import.meta.env.VITE_APP_API_URL}/api/recipes`
+        );
         console.log("Recipes API Response:", response.data);
         setRecipes(response.data);
       } catch (error) {
@@ -24,9 +26,18 @@ const Home = () => {
 
     fetchRecipes();
   }, []);
+  console.log(recipes);
 
   // Recipe categories for filtering
-  const filters = ["All", "Veg", "Non-Veg", "Snacks", "Breakfast", "Dessert", "Lunch"];
+  const filters = [
+    "All",
+    "Veg",
+    "Non-Veg",
+    "Snacks",
+    "Breakfast",
+    "Dessert",
+    "Lunch",
+  ];
 
   // Filter recipes based on search input and selected category
   const filteredRecipes = recipes.filter((recipe) => {
@@ -44,7 +55,6 @@ const Home = () => {
 
   return (
     <div className="home-container">
-    
       <section className="hero-section">
         <div className="hero-text">
           <h1>
@@ -155,9 +165,7 @@ const RecipeCard = ({ recipe }) => {
           )}
 
           <img
-            src={`https://soniascooking-production.up.railway.app/uploads/${images[currentImageIndex]
-              ?.split("/")
-              .pop()}`}
+            src={images[currentImageIndex]}
             className="recipe-image"
             alt={recipe.title}
             onError={(e) => (e.target.src = "/default-image.jpg")}

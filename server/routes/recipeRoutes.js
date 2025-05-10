@@ -11,7 +11,8 @@ const router = express.Router();
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 const fs = require("fs");
-
+const streamifier = require("streamifier");
+const cloudinary = require("../config/cloudinaryConfig.js")
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
@@ -70,15 +71,27 @@ router.post("/", upload.array("images", 5), async (req, res) => {
     const imagePaths = [];
 
     for (let file of req.files) {
-      const filename = `uploads/${Date.now()}-${file.originalname}`;
-      const filePath = path.join(__dirname, "../public", filename);
+      const streamUpload = () => {
+        return new Promise((resolve, reject) => {
+          const stream = cloudinary.uploader.upload_stream(
+            {
+              resource_type: "image",
+              folder: "recipes",
+            },
+            (error, result) => {
+              if (result) {
+                resolve(result.secure_url);
+              } else {
+                reject(error);
+              }
+            }
+          );
+          streamifier.createReadStream(file.buffer).pipe(stream);
+        });
+      };
 
-      await sharp(file.buffer)
-        .resize(800)
-        .jpeg({ quality: 80 })
-        .toFile(filePath);
-
-      imagePaths.push(`/${filename}`);
+      const imageUrl = await streamUpload();
+      imagePaths.push(imageUrl);
     }
 
     const newRecipe = new Recipe({
@@ -118,10 +131,10 @@ router.put(
         categories,
         ingredients,
         cookingTime,
-        cookingTips, 
-        benefits, 
-        kitchenHacks, 
-        youtubeVideo, 
+        cookingTips,
+        benefits,
+        kitchenHacks,
+        youtubeVideo,
         method,
       } = req.body;
 
@@ -131,20 +144,33 @@ router.put(
       }
 
       let imagePaths = existingRecipe.images;
-      if (req.files.length > 0) {
-        imagePaths = [];
-        for (let file of req.files) {
-          const filename = `uploads/${Date.now()}-${file.originalname}`;
-          const filePath = path.join(__dirname, "../public", filename);
+if (req.files.length > 0) {
+  imagePaths = [];
 
-          await sharp(file.buffer)
-            .resize(800)
-            .jpeg({ quality: 80 })
-            .toFile(filePath);
+  for (let file of req.files) {
+    const streamUpload = () => {
+      return new Promise((resolve, reject) => {
+        const stream = cloudinary.uploader.upload_stream(
+          {
+            resource_type: "image",
+            folder: "recipes",
+          },
+          (error, result) => {
+            if (result) {
+              resolve(result.secure_url);
+            } else {
+              reject(error);
+            }
+          }
+        );
+        streamifier.createReadStream(file.buffer).pipe(stream);
+      });
+    };
 
-          imagePaths.push(`/${filename}`);
-        }
-      }
+    const imageUrl = await streamUpload();
+    imagePaths.push(imageUrl);
+  }
+}
 
       const updatedRecipe = await Recipe.findByIdAndUpdate(
         req.params.id,
@@ -263,12 +289,10 @@ router.post("/:recipeId/rate", authMiddleware, async (req, res) => {
 
     console.log("Rating submitted successfully:", recipe.averageRating); // Log the new average rating
 
-    res
-      .status(200)
-      .json({
-        message: "Rating submitted successfully",
-        averageRating: recipe.averageRating,
-      });
+    res.status(200).json({
+      message: "Rating submitted successfully",
+      averageRating: recipe.averageRating,
+    });
   } catch (error) {
     console.error("Error submitting rating:", error);
     res.status(500).json({ message: "Error submitting rating" });

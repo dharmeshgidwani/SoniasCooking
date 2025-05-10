@@ -27,7 +27,7 @@ const Signup = () => {
 
   const handleVerifyOTP = async () => {
     try {
-      await axios.post("https://soniascooking-production.up.railway.app/api/auth/verify-otp", { email: form.email, otp });
+      await axios.post(`${import.meta.env.VITE_APP_API_URL}/api/auth/verify-otp`, { email: form.email, otp });
       toast.success("Email Verified! Redirecting to home...");
       setIsOtpModalOpen(false);
       setForm({ name: "", email: "", phone: "", password: "" });
